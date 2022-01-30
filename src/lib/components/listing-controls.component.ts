@@ -1,7 +1,7 @@
 import { Injector } from '@angular/core';
 import { RequestCriteria } from '@cartesianui/ng-axis';
 import { BaseComponent } from './base.component';
-import { IPaginationModel } from '../../models';
+import { IPaginationModel } from '../models';
 
 export abstract class ListingControlsComponent<
   TDataModel,

@@ -4,6 +4,7 @@
 export * from './lib/core.module';
 export * from './lib/base.sandbox';
 export * from './lib/animations';
+export * from './lib/components';
 export * from './lib/directive';
 export * from './lib/helpers';
 export * from './lib/models';

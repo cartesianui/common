@@ -17,7 +17,7 @@ import {
   AppModalHeaderComponent,
   AppModalFooterComponent,
   DefaultLayoutComponent,
-} from './ui/components';
+} from './ui';
 
 // Import 3rd party components
 import {
@@ -33,7 +33,6 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { ChartsModule } from 'ng2-charts';
-import { RouteGuard, SessionService } from '@shared/services';
 
 const CORE_UI_COMPONENT = [
   AppAsideModule,
