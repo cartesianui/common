@@ -1,7 +1,7 @@
 /*
  * Public API Surface of core
  */
-export * from './lib/core.module';
+export * from './lib/common.module';
 export * from './lib/base.sandbox';
 export * from './lib/animations';
 export * from './lib/components';

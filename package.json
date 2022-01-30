@@ -1,5 +1,5 @@
 {
-  "name": "@cartesianui/core",
+  "name": "@cartesianui/common",
   "version": "0.0.1",
   "peerDependencies": {
     "@angular/common": "^12.2.0",

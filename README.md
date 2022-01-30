@@ -1,4 +1,4 @@
-# Core
+# @cartesianui/common
 
 This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.2.0.
 
@@ -13,7 +13,7 @@ Run `ng build core` to build the project. The build artifacts will be stored in 
 
 ## Publishing
 
-After building your library with `ng build core`, go to the dist folder `cd dist/core` and run `npm publish`.
+After building your library with `ng build core`, go to the dist folder `cd dist/common` and run `npm publish`.
 
 ## Running unit tests
 

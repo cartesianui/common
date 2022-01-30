@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule as AngularCommonModule } from '@angular/common';
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { NgxPaginationModule } from 'ngx-pagination';
@@ -45,7 +45,7 @@ const APP_LAYOUTS = [ DefaultLayoutComponent ];
 
 @NgModule({
   imports: [
-    CommonModule,
+    AngularCommonModule,
     RouterModule,
     NgxPaginationModule,
     PerfectScrollbarModule,
@@ -77,10 +77,10 @@ const APP_LAYOUTS = [ DefaultLayoutComponent ];
     ...APP_LAYOUTS,
   ],
 })
-export class CoreModule {
-  static forRoot(): ModuleWithProviders<CoreModule> {
+export class CommonModule {
+  static forRoot(): ModuleWithProviders<CommonModule> {
     return {
-      ngModule: CoreModule,
+      ngModule: CommonModule,
       providers: [],
     };
   }
