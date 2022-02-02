@@ -1,11 +1,4 @@
-import {
-  Component,
-  Input,
-  Output,
-  EventEmitter,
-  ChangeDetectionStrategy,
-  Injector
-} from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, Injector } from '@angular/core';
 import { BaseComponent } from '../../components';
 
 @Component({

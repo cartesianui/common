@@ -7,10 +7,7 @@ import { PermissionCheckerService } from '@cartesianui/ng-axis';
 export class AccessibleDirective implements OnInit {
   @Input() permissions: string[];
 
-  constructor(
-    private _element: ElementRef,
-    private permissionCheckerService: PermissionCheckerService
-  ) {}
+  constructor(private _element: ElementRef, private permissionCheckerService: PermissionCheckerService) {}
 
   ngOnInit() {
     this._element.nativeElement.style.display = 'none';
@@ -18,7 +15,6 @@ export class AccessibleDirective implements OnInit {
   }
 
   canAccess() {
-    this._element.nativeElement.style.display =
-      this.permissionCheckerService.isGranted('') ? 'block' : 'none';
+    this._element.nativeElement.style.display = this.permissionCheckerService.isGranted('') ? 'block' : 'none';
   }
 }

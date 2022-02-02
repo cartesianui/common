@@ -1,11 +1,4 @@
-import {
-  Component,
-  Input,
-  Injector,
-  Renderer2,
-  ElementRef,
-  OnInit
-} from '@angular/core';
+import { Component, Input, Injector, Renderer2, ElementRef, OnInit } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 import { BaseComponent } from '../../components/base.component';
 import { AxisValidationError } from './app-validation.api';
@@ -14,10 +7,7 @@ import { AxisValidationError } from './app-validation.api';
   selector: 'app-validation-summary',
   templateUrl: './app-validation-summary.component.html'
 })
-export class AppValidationSummaryComponent
-  extends BaseComponent
-  implements OnInit
-{
+export class AppValidationSummaryComponent extends BaseComponent implements OnInit {
   defaultValidationErrors: Partial<AxisValidationError>[] = [
     { name: 'required', localizationKey: 'ThisFieldIsRequired' },
     {
@@ -55,13 +45,7 @@ export class AppValidationSummaryComponent
 
   @Input() set customValidationErrors(val: AxisValidationError[]) {
     if (val && val.length > 0) {
-      const defaults = this.defaultValidationErrors.filter(
-        (defaultValidationError) =>
-          !val.find(
-            (customValidationError) =>
-              customValidationError.name === defaultValidationError.name
-          )
-      );
+      const defaults = this.defaultValidationErrors.filter((defaultValidationError) => !val.find((customValidationError) => customValidationError.name === defaultValidationError.name));
       this.validationErrors = [...defaults, ...val] as AxisValidationError[];
     }
   }
@@ -69,10 +53,7 @@ export class AppValidationSummaryComponent
   ngOnInit() {
     if (this.controlEl) {
       this.control.valueChanges.subscribe(() => {
-        if (
-          this.control.valid &&
-          (this.control.dirty || this.control.touched)
-        ) {
+        if (this.control.valid && (this.control.dirty || this.control.touched)) {
           this._renderer.removeClass(this.controlEl, 'is-invalid');
         }
       });
@@ -85,8 +66,6 @@ export class AppValidationSummaryComponent
     }
 
     const propertyValue = this.control.errors[error.name][error.propertyKey];
-    return !!propertyValue
-      ? this.l(error.localizationKey, propertyValue)
-      : this.l(error.localizationKey);
+    return !!propertyValue ? this.l(error.localizationKey, propertyValue) : this.l(error.localizationKey);
   }
 }

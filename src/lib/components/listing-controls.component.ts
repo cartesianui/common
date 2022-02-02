@@ -3,10 +3,7 @@ import { RequestCriteria } from '@cartesianui/ng-axis';
 import { BaseComponent } from './base.component';
 import { IPaginationModel } from '../models';
 
-export abstract class ListingControlsComponent<
-  TDataModel,
-  TSearchFormModel
-> extends BaseComponent {
+export abstract class ListingControlsComponent<TDataModel, TSearchFormModel> extends BaseComponent {
   criteria: RequestCriteria<TSearchFormModel>;
   data: Array<TDataModel>;
   pagination: IPaginationModel;

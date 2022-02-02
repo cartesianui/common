@@ -45,13 +45,7 @@ export class TypeaheadControlsComponent<ItemType> extends BaseComponent {
   resetValidators(validators?: ValidatorFn[]) {
     const v = validators
       ? validators
-      : [
-          Validators.required,
-          this.formValidator.inValidator(this.typeaheadData),
-          this.formValidator.notInValidator(
-            this.addedItems.map((item) => item[this.validationPropertyName])
-          )
-        ];
+      : [Validators.required, this.formValidator.inValidator(this.typeaheadData), this.formValidator.notInValidator(this.addedItems.map((item) => item[this.validationPropertyName]))];
     this.control.setValidators(v);
     this.control.updateValueAndValidity();
   }

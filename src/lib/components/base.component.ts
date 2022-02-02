@@ -15,8 +15,7 @@ import {
 import { FormValidatorService } from '@cartesianui/ng-form';
 
 export abstract class BaseComponent {
-  localizationSourceName =
-    AppConstants.localization.defaultLocalizationSourceName;
+  localizationSourceName = AppConstants.localization.defaultLocalizationSourceName;
 
   localization: LocalizationService;
   permissionCheckerService: PermissionCheckerService;
@@ -46,10 +45,7 @@ export abstract class BaseComponent {
   }
 
   l(key: string, ...args: any[]): string {
-    let localizedText = this.localization.localize(
-      key,
-      this.localizationSourceName
-    );
+    let localizedText = this.localization.localize(key, this.localizationSourceName);
 
     if (!localizedText) {
       localizedText = key;
