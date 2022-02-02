@@ -2,7 +2,7 @@ import { Directive, ElementRef, Input } from '@angular/core';
 import { UiService } from '@cartesianui/ng-axis';
 
 @Directive({
-  selector: '[busy]',
+  selector: '[busy]'
 })
 export class BusyDirective {
   constructor(private _element: ElementRef, private _uiService: UiService) {}

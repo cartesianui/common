@@ -10,7 +10,7 @@ import {
   MessageService,
   TenancyService,
   UiService,
-  SessionService,
+  SessionService
 } from '@cartesianui/ng-axis';
 import { FormValidatorService } from '@cartesianui/ng-form';
 

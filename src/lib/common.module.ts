@@ -7,16 +7,20 @@ import {
   AppBreadcrumbModule,
   AppHeaderModule,
   AppFooterModule,
-  AppSidebarModule,
+  AppSidebarModule
 } from '@coreui/angular';
 import { LocalizePipe } from './pipes';
-import { BusyDirective, AccessibleDirective, EqualValidator } from './directive'
+import {
+  BusyDirective,
+  AccessibleDirective,
+  EqualValidator
+} from './directive';
 import {
   AppPaginationControlsComponent,
   AppValidationSummaryComponent,
   AppModalHeaderComponent,
   AppModalFooterComponent,
-  DefaultLayoutComponent,
+  DefaultLayoutComponent
 } from './ui';
 
 // Import 3rd party components
@@ -27,7 +31,7 @@ import {
 } from 'ngx-perfect-scrollbar';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
-  suppressScrollX: true,
+  suppressScrollX: true
 };
 
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
@@ -39,9 +43,9 @@ const CORE_UI_COMPONENT = [
   AppBreadcrumbModule,
   AppHeaderModule,
   AppFooterModule,
-  AppSidebarModule,
+  AppSidebarModule
 ];
-const APP_LAYOUTS = [ DefaultLayoutComponent ];
+const APP_LAYOUTS = [DefaultLayoutComponent];
 
 @NgModule({
   imports: [
@@ -52,7 +56,7 @@ const APP_LAYOUTS = [ DefaultLayoutComponent ];
     BsDropdownModule.forRoot(),
     TabsModule.forRoot(),
     ChartsModule,
-    ...CORE_UI_COMPONENT,
+    ...CORE_UI_COMPONENT
   ],
   declarations: [
     AppPaginationControlsComponent,
@@ -63,7 +67,7 @@ const APP_LAYOUTS = [ DefaultLayoutComponent ];
     BusyDirective,
     AccessibleDirective,
     EqualValidator,
-    ...APP_LAYOUTS,
+    ...APP_LAYOUTS
   ],
   exports: [
     AppPaginationControlsComponent,
@@ -74,14 +78,14 @@ const APP_LAYOUTS = [ DefaultLayoutComponent ];
     BusyDirective,
     AccessibleDirective,
     EqualValidator,
-    ...APP_LAYOUTS,
-  ],
+    ...APP_LAYOUTS
+  ]
 })
 export class CommonModule {
   static forRoot(): ModuleWithProviders<CommonModule> {
     return {
       ngModule: CommonModule,
-      providers: [],
+      providers: []
     };
   }
 }

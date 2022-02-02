@@ -4,14 +4,14 @@ import {
   Output,
   EventEmitter,
   ChangeDetectionStrategy,
-  Injector,
+  Injector
 } from '@angular/core';
 import { BaseComponent } from '../../components';
 
 @Component({
   selector: 'app-modal-header',
   templateUrl: './app-modal-header.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppModalHeaderComponent extends BaseComponent {
   @Input() title: string;

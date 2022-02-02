@@ -4,7 +4,7 @@ import {
   Injector,
   Renderer2,
   ElementRef,
-  OnInit,
+  OnInit
 } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 import { BaseComponent } from '../../components/base.component';
@@ -12,7 +12,7 @@ import { AxisValidationError } from './app-validation.api';
 
 @Component({
   selector: 'app-validation-summary',
-  templateUrl: './app-validation-summary.component.html',
+  templateUrl: './app-validation-summary.component.html'
 })
 export class AppValidationSummaryComponent
   extends BaseComponent
@@ -23,26 +23,26 @@ export class AppValidationSummaryComponent
     {
       name: 'minlength',
       localizationKey: 'PleaseEnterAtLeastNCharacter',
-      propertyKey: 'requiredLength',
+      propertyKey: 'requiredLength'
     },
     {
       name: 'maxlength',
       localizationKey: 'PleaseEnterNoMoreThanNCharacter',
-      propertyKey: 'requiredLength',
+      propertyKey: 'requiredLength'
     },
     {
       name: 'email',
-      localizationKey: 'InvalidEmailAddress',
+      localizationKey: 'InvalidEmailAddress'
     },
     {
       name: 'pattern',
       localizationKey: 'InvalidPattern',
-      propertyKey: 'requiredPattern',
+      propertyKey: 'requiredPattern'
     },
     {
       name: 'validateEqual',
-      localizationKey: 'PairsDoNotMatch',
-    },
+      localizationKey: 'PairsDoNotMatch'
+    }
   ];
   validationErrors = this.defaultValidationErrors as AxisValidationError[];
 

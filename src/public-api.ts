@@ -9,4 +9,4 @@ export * from './lib/directive';
 export * from './lib/helpers';
 export * from './lib/models';
 export * from './lib/pipes';
-export * from './lib/ui'
+export * from './lib/ui';

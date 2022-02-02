@@ -1,7 +1,6 @@
 import Deserializable from './deserializeable.interface';
 
 export class ParentModel implements Deserializable {
-
   constructor(data) {
     if (data) {
       for (const property in data) {

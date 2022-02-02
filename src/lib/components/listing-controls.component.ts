@@ -16,7 +16,7 @@ export abstract class ListingControlsComponent<
     super(injector);
     this.pagination = {
       currentPage: 1,
-      perPage: 30,
+      perPage: 30
     };
   }
 

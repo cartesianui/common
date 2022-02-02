@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-pagination-controls',
-  templateUrl: './app-pagination-controls.component.html',
+  templateUrl: './app-pagination-controls.component.html'
 })
 export class AppPaginationControlsComponent {
   @Input() id: string;

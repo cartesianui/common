@@ -4,14 +4,14 @@ import {
   Output,
   EventEmitter,
   ChangeDetectionStrategy,
-  Injector,
+  Injector
 } from '@angular/core';
 import { BaseComponent } from '../../components';
 
 @Component({
   selector: 'app-modal-footer',
   templateUrl: './app-modal-footer.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppModalFooterComponent extends BaseComponent {
   @Input() cancelLabel = this.l('Cancel');

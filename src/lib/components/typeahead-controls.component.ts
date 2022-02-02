@@ -50,7 +50,7 @@ export class TypeaheadControlsComponent<ItemType> extends BaseComponent {
           this.formValidator.inValidator(this.typeaheadData),
           this.formValidator.notInValidator(
             this.addedItems.map((item) => item[this.validationPropertyName])
-          ),
+          )
         ];
     this.control.setValidators(v);
     this.control.updateValueAndValidity();
