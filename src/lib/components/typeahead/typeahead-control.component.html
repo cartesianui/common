@@ -1,0 +1,17 @@
+<form class="form-group form-inline">
+  <input
+    [(ngModel)]="selected"
+    [typeahead]="options"
+    [typeaheadOptionField]="optionField"
+    [typeaheadMultipleSearch]="multiple"
+    [formControl]="formControl"
+    [ngClass]="formControl.valid ? 'is-valid' : formControl.touched && formControl.dirty ? 'is-invalid' : ''"
+    class="form-control"
+  />
+
+  <button class="btn btn-success ml-1" (click)="processSelected()" [disabled]="formControl.invalid">
+    <i class="fa fa-plus"></i>
+  </button>
+
+  <div class="invalid-feedback">Invalid permission value!</div>
+</form>

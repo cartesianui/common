@@ -1,12 +1,25 @@
-import { Injector } from '@angular/core';
+import { Directive, EventEmitter, Injector, Input, Output } from '@angular/core';
 import { RequestCriteria } from '@cartesianui/ng-axis';
 import { BaseComponent } from './base.component';
 import { IPaginationModel } from '../models';
 
+@Directive()
 export abstract class ListingControlsComponent<TDataModel, TSearchFormModel> extends BaseComponent {
+  // use if data is passed from parent
+  @Input()
+  rows: Array<TDataModel>;
+
+  @Output()
+  cbClick: EventEmitter<Array<TDataModel>> = new EventEmitter<Array<TDataModel>>();
+
+  data: Array<TDataModel>; // use to populate data directly in child
+
+  selected: Array<TDataModel> = [];
+
   criteria: RequestCriteria<TSearchFormModel>;
-  data: Array<TDataModel>;
+
   pagination: IPaginationModel;
+
   isTableLoading = false;
 
   constructor(injector: Injector) {
@@ -17,16 +30,8 @@ export abstract class ListingControlsComponent<TDataModel, TSearchFormModel> ext
     };
   }
 
-  reloadTable(): void {
-    this.list();
-  }
-
-  getCurrentPage(): number {
-    return this.pagination.currentPage;
-  }
-
-  getOffsetFromPagination(): number {
-    return this.covertPageNumberToOffset(this.getCurrentPage());
+  initRequestCriteria(searchForm: { new (): TSearchFormModel }): RequestCriteria<TSearchFormModel> {
+    return (this.criteria = new RequestCriteria<TSearchFormModel>(new searchForm()));
   }
 
   setPage(event): void {
@@ -35,7 +40,29 @@ export abstract class ListingControlsComponent<TDataModel, TSearchFormModel> ext
   }
 
   setSorting(event): void {
+    this.criteria.orderBy(event.column.name, event.newValue);
     this.reloadTable();
+  }
+
+  onSelect(event): void {
+    this.selected = event.selected;
+    this.cbClick.emit(event);
+  }
+
+  protected abstract list(): void;
+
+  protected abstract delete(): void;
+
+  protected abstract registerEvents(): void;
+
+  // Helpers
+
+  getCurrentPage(): number {
+    return this.pagination.currentPage;
+  }
+
+  getOffsetFromPagination(): number {
+    return this.covertPageNumberToOffset(this.getCurrentPage());
   }
 
   covertPageNumberToOffset(pageNumber: number): number {
@@ -46,9 +73,7 @@ export abstract class ListingControlsComponent<TDataModel, TSearchFormModel> ext
     return offset + 1;
   }
 
-  protected abstract list(): void;
-
-  protected abstract delete(): void;
-
-  protected abstract registerEvents(): void;
+  reloadTable(): void {
+    this.list();
+  }
 }
