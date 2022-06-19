@@ -1,5 +1,5 @@
 import { Injector } from '@angular/core';
-import { SessionService, localeDateString } from '@cartesianui/ng-axis';
+import { SessionService, localeDateString } from '@cartesianui/core';
 
 export abstract class Sandbox {
   protected _sessionService: SessionService;

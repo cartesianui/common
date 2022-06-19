@@ -1,5 +1,5 @@
 import { Directive, EventEmitter, Injector, Input, Output } from '@angular/core';
-import { RequestCriteria } from '@cartesianui/ng-axis';
+import { RequestCriteria } from '@cartesianui/core';
 import { BaseComponent } from './base.component';
 import { IPaginationModel } from '../models';
 
