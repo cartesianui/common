@@ -11,7 +11,7 @@ import {
   TenancyService,
   UiService,
   SessionService
-} from '@cartesianui/ng-axis';
+} from '@cartesianui/core';
 import { FormValidatorService } from '@cartesianui/forms';
 
 export abstract class BaseComponent {

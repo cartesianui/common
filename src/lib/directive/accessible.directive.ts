@@ -1,5 +1,5 @@
 import { Directive, Input, OnInit, ElementRef } from '@angular/core';
-import { PermissionCheckerService } from '@cartesianui/ng-axis';
+import { PermissionCheckerService } from '@cartesianui/core';
 
 @Directive({
   selector: '[accessible]'
