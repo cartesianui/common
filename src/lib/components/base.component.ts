@@ -12,7 +12,7 @@ import {
   UiService,
   SessionService
 } from '@cartesianui/ng-axis';
-import { FormValidatorService } from '@cartesianui/ng-form';
+import { FormValidatorService } from '@cartesianui/forms';
 
 export abstract class BaseComponent {
   localizationSourceName = AppConstants.localization.defaultLocalizationSourceName;

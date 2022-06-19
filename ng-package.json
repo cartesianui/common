@@ -5,7 +5,7 @@
     "entryFile": "src/public-api.ts",
     "umdModuleIds": {
       "@cartesianui/ng-axis": "@cartesianui/ng-axis",
-      "@cartesianui/ng-form'": "@cartesianui/ng-form'",
+      "@cartesianui/forms": "@cartesianui/forms",
       "ngx-bootstrap/typeahead": "ngx-bootstrap/typeahead"
     }
   }
