@@ -1,4 +1,6 @@
 import { Injector, ElementRef } from '@angular/core';
+import { Router, ActivatedRoute, NavigationEnd, Event } from '@angular/router';
+import { Title } from "@angular/platform-browser";
 import { Subscription } from 'rxjs';
 import {
   AppConstants,
@@ -29,6 +31,9 @@ export abstract class BaseComponent {
   elementRef: ElementRef;
   subscriptions: Array<Subscription> = [];
   formValidator: FormValidatorService;
+  titleService: Title;
+  router: Router;
+  route: ActivatedRoute;
 
   constructor(injector: Injector) {
     this.localization = injector.get(LocalizationService);
@@ -42,6 +47,9 @@ export abstract class BaseComponent {
     this.appSession = injector.get(SessionService);
     this.formValidator = injector.get(FormValidatorService);
     this.elementRef = injector.get(ElementRef);
+    this.titleService = injector.get(Title);
+    this.router = injector.get(Router);
+    this.route = injector.get(ActivatedRoute);
   }
 
   l(key: string, ...args: any[]): string {
@@ -63,7 +71,7 @@ export abstract class BaseComponent {
     return this.permissionCheckerService.isGranted(permissionName);
   }
 
-  protected unregisterEvents() {
+  protected removeSubscriptions() {
     this.subscriptions.forEach((sub) => {
       sub.unsubscribe();
     });

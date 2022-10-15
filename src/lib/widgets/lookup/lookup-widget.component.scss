@@ -1,0 +1,24 @@
+.selected-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  li {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px;
+    border: var(--cui-light) 1px solid;
+
+    &:hover {
+      background-color: var(--cui-light);
+    }
+
+    i {
+      color: var(--cui-danger);
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+}

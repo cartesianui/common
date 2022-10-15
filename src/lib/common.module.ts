@@ -4,11 +4,14 @@ import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LocalizePipe } from './pipes';
 import { BusyDirective, AccessibleDirective, EqualValidator } from './directive';
-import { TypeaheadControlComponent } from './components';
 
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
+import { DatetimeService } from "./services";
+import { LookupWidgetComponent } from "./widgets";
 
-const COMMON_COMPONENTS = [TypeaheadControlComponent];
+const COMMON_COMPONENTS = [];
+const WIDGET_COMPONENTS = [ LookupWidgetComponent ];
 
 @NgModule({
   imports: [
@@ -17,33 +20,36 @@ const COMMON_COMPONENTS = [TypeaheadControlComponent];
     FormsModule,
     ReactiveFormsModule,
     TypeaheadModule,
+    NgxDatatableModule
   ],
   declarations: [
     LocalizePipe,
     BusyDirective,
     AccessibleDirective,
     EqualValidator,
-    ...COMMON_COMPONENTS
+    ...COMMON_COMPONENTS,
+    ...WIDGET_COMPONENTS
   ],
   exports: [
     LocalizePipe,
     BusyDirective,
     AccessibleDirective,
     EqualValidator,
-    ...COMMON_COMPONENTS
+    ...COMMON_COMPONENTS,
+    ...WIDGET_COMPONENTS
   ]
 })
 export class CommonModule {
   static forRoot(): ModuleWithProviders<CommonModule> {
     return {
       ngModule: CommonModule,
-      providers: []
+      providers: [DatetimeService]
     };
   }
   static forFeature(): ModuleWithProviders<CommonModule> {
     return {
       ngModule: CommonModule,
-      providers: []
+      providers: [DatetimeService]
     };
   }
 }

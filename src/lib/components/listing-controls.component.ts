@@ -2,9 +2,13 @@ import { Directive, EventEmitter, Injector, Input, Output } from '@angular/core'
 import { RequestCriteria } from '@cartesianui/core';
 import { BaseComponent } from './base.component';
 import { IPaginationModel } from '../models';
+import {ElementRef, ViewChild} from "@node_modules/@angular/core";
 
 @Directive()
 export abstract class ListingControlsComponent<TDataModel, TSearchFormModel> extends BaseComponent {
+
+  @ViewChild('dtContainer') dtContainer: ElementRef;
+
   // use if data is passed from parent
   @Input()
   rows: Array<TDataModel>;
@@ -20,6 +24,8 @@ export abstract class ListingControlsComponent<TDataModel, TSearchFormModel> ext
 
   pagination: IPaginationModel;
 
+  searchText = '';
+
   isTableLoading = false;
 
   constructor(injector: Injector) {
@@ -30,35 +36,43 @@ export abstract class ListingControlsComponent<TDataModel, TSearchFormModel> ext
     };
   }
 
-  initRequestCriteria(searchForm: { new (): TSearchFormModel }): RequestCriteria<TSearchFormModel> {
+  protected abstract list(): void;
+
+  protected abstract delete(): void;
+
+  protected abstract addSubscriptions(): void;
+
+  initCriteria(searchForm: { new (): TSearchFormModel }): RequestCriteria<TSearchFormModel> {
     return (this.criteria = new RequestCriteria<TSearchFormModel>(new searchForm()));
   }
 
   setPage(event): void {
     this.criteria.page(this.covertOffsetToPageNumber(event.offset));
-    this.reloadTable();
+    this.reload();
   }
 
   setSorting(event): void {
     this.criteria.orderBy(event.column.name, event.newValue);
-    this.reloadTable();
+    this.reload();
   }
 
   onSelect(event): void {
-    this.selected = event.selected;
+    this.selected = [...event.selected];
     this.cbClick.emit(event);
   }
 
-  protected abstract list(): void;
+  startLoading(): void {
+    // this.ui.setBusy(this.dtContainer.nativeElement);
+    // this.isTableLoading = true;
+  }
 
-  protected abstract delete(): void;
-
-  protected abstract registerEvents(): void;
-
-  // Helpers
+  completeLoading(): void {
+    // this.ui.clearBusy();
+    // this.isTableLoading = false;
+  }
 
   getCurrentPage(): number {
-    return this.pagination.currentPage;
+    return this.pagination?.currentPage ?? 1;
   }
 
   getOffsetFromPagination(): number {
@@ -73,7 +87,7 @@ export abstract class ListingControlsComponent<TDataModel, TSearchFormModel> ext
     return offset + 1;
   }
 
-  reloadTable(): void {
+  reload(): void {
     this.list();
   }
 }
