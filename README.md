@@ -1,20 +1,20 @@
 # @cartesianui/common
 
-This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.2.0.
+This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.2.8.
 
 ## Code scaffolding
 
-Run `ng generate component component-name --project core` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project core`.
+Run `ng generate component component-name --project core` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project common`.
 
-> Note: Don't forget to add `--project core` or else it will be added to the default project in your `angular.json` file.
+> Note: Don't forget to add `--project common` or else it will be added to the default project in your `angular.json` file.
 
 ## Build
 
-Run `ng build core` to build the project. The build artifacts will be stored in the `dist/` directory.
+Run `ng build common` to build the project. The build artifacts will be stored in the `dist/` directory.
 
 ## Publishing
 
-After building your library with `ng build core`, go to the dist folder `cd dist/common` and run `npm publish`.
+After building your library with `ng build common`, go to the dist folder `cd dist/common` and run `npm publish`.
 
 ## Running unit tests
 
