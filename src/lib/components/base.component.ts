@@ -1,6 +1,6 @@
 import { Injector, ElementRef } from '@angular/core';
 import { Router, ActivatedRoute, NavigationEnd, Event } from '@angular/router';
-import { Title } from "@angular/platform-browser";
+import { Title } from '@angular/platform-browser';
 import { Subscription } from 'rxjs';
 import {
   AppConstants,

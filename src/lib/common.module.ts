@@ -7,37 +7,16 @@ import { BusyDirective, AccessibleDirective, EqualValidator } from './directive'
 
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
-import { DatetimeService } from "./services";
-import { LookupWidgetComponent } from "./widgets";
+import { DatetimeService } from './services';
+import { LookupWidgetComponent } from './widgets';
 
 const COMMON_COMPONENTS = [];
-const WIDGET_COMPONENTS = [ LookupWidgetComponent ];
+const WIDGET_COMPONENTS = [LookupWidgetComponent];
 
 @NgModule({
-  imports: [
-    AngularCommonModule,
-    RouterModule,
-    FormsModule,
-    ReactiveFormsModule,
-    TypeaheadModule,
-    NgxDatatableModule
-  ],
-  declarations: [
-    LocalizePipe,
-    BusyDirective,
-    AccessibleDirective,
-    EqualValidator,
-    ...COMMON_COMPONENTS,
-    ...WIDGET_COMPONENTS
-  ],
-  exports: [
-    LocalizePipe,
-    BusyDirective,
-    AccessibleDirective,
-    EqualValidator,
-    ...COMMON_COMPONENTS,
-    ...WIDGET_COMPONENTS
-  ]
+  imports: [AngularCommonModule, RouterModule, FormsModule, ReactiveFormsModule, TypeaheadModule, NgxDatatableModule],
+  declarations: [LocalizePipe, BusyDirective, AccessibleDirective, EqualValidator, ...COMMON_COMPONENTS, ...WIDGET_COMPONENTS],
+  exports: [LocalizePipe, BusyDirective, AccessibleDirective, EqualValidator, ...COMMON_COMPONENTS, ...WIDGET_COMPONENTS]
 })
 export class CommonModule {
   static forRoot(): ModuleWithProviders<CommonModule> {
