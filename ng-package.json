@@ -2,11 +2,6 @@
   "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
   "dest": "../../dist/common",
   "lib": {
-    "entryFile": "src/public-api.ts",
-    "umdModuleIds": {
-      "@cartesianui/core": "@cartesianui/core",
-      "@cartesianui/forms": "@cartesianui/forms",
-      "ngx-bootstrap/typeahead": "ngx-bootstrap/typeahead"
-    }
+    "entryFile": "src/public-api.ts"
   }
 }

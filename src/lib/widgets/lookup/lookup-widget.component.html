@@ -1,0 +1,23 @@
+<form class="form-group form-inline">
+  <div class="input-group mb-3">
+    <input
+      [(ngModel)]="value"
+      [typeahead]="options"
+      [typeaheadOptionField]="optionField"
+      [typeaheadMultipleSearch]="true"
+      [formControl]="formControl"
+      [ngClass]="formControl.valid ? 'is-valid' : formControl.touched && formControl.dirty && value ? 'is-invalid' : ''"
+      class="form-control"
+    />
+    <button class="input-group-text btn btn-success" (click)="onSelect()" [disabled]="formControl.invalid">
+      <i class="fa fa-plus"></i>
+    </button>
+  </div>
+  <div *ngIf="selected.length > 0">
+    <ul class="selected-list">
+      <li *ngFor="let item of selected; index as i; first as isFirst">
+        <span>{{item.name}}</span> <span (click)="onDelete(i)"><i class="fa fa-trash"></i></span>
+      </li>
+    </ul>
+  </div>
+</form>
