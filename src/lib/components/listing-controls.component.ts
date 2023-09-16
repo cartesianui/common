@@ -1,24 +1,34 @@
-import { Directive, EventEmitter, Injector, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Injector, Input, Output } from '@angular/core';
 import { RequestCriteria } from '@cartesianui/core';
 import { BaseComponent } from './base.component';
+import { ChildComponent} from './base.types';
 import { IPaginationModel } from '../models';
-import {ElementRef, ViewChild} from "@node_modules/@angular/core";
+import { ElementRef, ViewChild } from '@angular/core';
 
-@Directive()
-export abstract class ListingControlsComponent<TDataModel, TSearchFormModel> extends BaseComponent {
 
+@Component({
+  template: ''
+})
+export abstract class ListingControlsComponent<TDataModel, TSearchFormModel, TChildComponent extends ChildComponent = {}> extends BaseComponent<TChildComponent> {
   @ViewChild('dtContainer') dtContainer: ElementRef;
 
   // use if data is passed from parent
   @Input()
   rows: Array<TDataModel>;
 
+  @Input()
+  selected: Array<TDataModel> = [];
+
+  // cbClick & selectedChange both save, selected added laterly to use selected & selectedChange conventiobn
+  // cbClick not removed to retain backwork compability
+  @Output()
+  selectedChange: EventEmitter<Array<TDataModel>> = new EventEmitter<Array<TDataModel>>();
+
   @Output()
   cbClick: EventEmitter<Array<TDataModel>> = new EventEmitter<Array<TDataModel>>();
 
-  data: Array<TDataModel>; // use to populate data directly in child
-
-  selected: Array<TDataModel> = [];
+  // Use to populate data directly (in add subscription)
+  data: Array<TDataModel>;
 
   criteria: RequestCriteria<TSearchFormModel>;
 
@@ -59,6 +69,7 @@ export abstract class ListingControlsComponent<TDataModel, TSearchFormModel> ext
   onSelect(event): void {
     this.selected = [...event.selected];
     this.cbClick.emit(event);
+    this.selectedChange.emit(event);
   }
 
   startLoading(): void {

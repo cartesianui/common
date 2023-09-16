@@ -1,4 +1,4 @@
-import { Injector, ElementRef } from '@angular/core';
+import { Injector, ElementRef, OnDestroy, Directive, Component } from '@angular/core';
 import { Router, ActivatedRoute, NavigationEnd, Event } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { Subscription } from 'rxjs';
@@ -12,11 +12,17 @@ import {
   MessageService,
   TenancyService,
   UiService,
-  SessionService
+  SessionService,
+  HttpErrorService
 } from '@cartesianui/core';
-import { FormValidatorService } from '@cartesianui/forms';
+import { ValidationService } from '@cartesianui/forms';
+import { ChildComponent, ChildComponentSelected } from './base.types';
+import { isEqual } from 'lodash';
 
-export abstract class BaseComponent {
+@Component({
+  template: ''
+})
+export abstract class BaseComponent<TChildComponent extends ChildComponent = {}> implements OnDestroy {
   localizationSourceName = AppConstants.localization.defaultLocalizationSourceName;
 
   localization: LocalizationService;
@@ -30,10 +36,15 @@ export abstract class BaseComponent {
   appSession: SessionService;
   elementRef: ElementRef;
   subscriptions: Array<Subscription> = [];
-  formValidator: FormValidatorService;
+  formValidator: ValidationService;
   titleService: Title;
   router: Router;
   route: ActivatedRoute;
+  errorService: HttpErrorService;
+
+  childComponents: TChildComponent;
+  childComponentSelected: ChildComponentSelected<TChildComponent> | false = false;
+  childSelected: boolean = false;
 
   constructor(injector: Injector) {
     this.localization = injector.get(LocalizationService);
@@ -45,11 +56,16 @@ export abstract class BaseComponent {
     this.message = injector.get(MessageService);
     this.tenancy = injector.get(TenancyService);
     this.appSession = injector.get(SessionService);
-    this.formValidator = injector.get(FormValidatorService);
+    this.formValidator = injector.get(ValidationService);
     this.elementRef = injector.get(ElementRef);
     this.titleService = injector.get(Title);
     this.router = injector.get(Router);
     this.route = injector.get(ActivatedRoute);
+    this.errorService = injector.get(HttpErrorService);
+  }
+
+  ngOnDestroy(): void {
+    this.removeSubscriptions();
   }
 
   l(key: string, ...args: any[]): string {
@@ -75,5 +91,24 @@ export abstract class BaseComponent {
     this.subscriptions.forEach((sub) => {
       sub.unsubscribe();
     });
+  }
+
+  isComponentSelected(component: ChildComponentSelected<TChildComponent>): boolean {
+    if (this.childSelected && isEqual(this.childComponentSelected, component)) {
+      return true;
+    }
+    return false;
+  }
+
+  showChildComponent(component: ChildComponentSelected<TChildComponent>): void {
+    this.childSelected = true;
+    this.childComponentSelected = component;
+  }
+
+  hideChildComponent(visible): void {
+    if (visible === false) {
+      this.childSelected = false;
+      this.childComponentSelected = false;
+    }
   }
 }
