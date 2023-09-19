@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Injector, Input, Output } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Injector, Input, Output } from '@angular/core';
 import { RequestCriteria } from '@cartesianui/core';
 import { BaseComponent } from './base.component';
 import { ChildComponent} from './base.types';
@@ -9,7 +9,7 @@ import { ElementRef, ViewChild } from '@angular/core';
 @Component({
   template: ''
 })
-export abstract class ListingControlsComponent<TDataModel, TSearchFormModel, TChildComponent extends ChildComponent = {}> extends BaseComponent<TChildComponent> {
+export abstract class ListingControlsComponent<TDataModel, TSearchFormModel, TChildComponent extends ChildComponent = {}> extends BaseComponent<TChildComponent> implements AfterViewInit {
   @ViewChild('dtContainer') dtContainer: ElementRef;
 
   // use if data is passed from parent
@@ -46,11 +46,15 @@ export abstract class ListingControlsComponent<TDataModel, TSearchFormModel, TCh
     };
   }
 
+  ngAfterViewInit(): void {
+    this.reload();
+  }
+  
   protected abstract list(): void;
 
-  protected abstract delete(): void;
+  // protected abstract onDelete(): void;
 
-  protected abstract addSubscriptions(): void;
+  // protected abstract addSubscriptions(): void;
 
   initCriteria(searchForm: { new (): TSearchFormModel }): RequestCriteria<TSearchFormModel> {
     return (this.criteria = new RequestCriteria<TSearchFormModel>(new searchForm()));

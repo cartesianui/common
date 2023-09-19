@@ -13,7 +13,7 @@ import {
   TenancyService,
   UiService,
   SessionService,
-  HttpErrorService
+  HttpNotificationService
 } from '@cartesianui/core';
 import { ValidationService } from '@cartesianui/forms';
 import { ChildComponent, ChildComponentSelected } from './base.types';
@@ -40,7 +40,7 @@ export abstract class BaseComponent<TChildComponent extends ChildComponent = {}>
   titleService: Title;
   router: Router;
   route: ActivatedRoute;
-  errorService: HttpErrorService;
+  errorService: HttpNotificationService;
 
   childComponents: TChildComponent;
   childComponentSelected: ChildComponentSelected<TChildComponent> | false = false;
@@ -61,7 +61,7 @@ export abstract class BaseComponent<TChildComponent extends ChildComponent = {}>
     this.titleService = injector.get(Title);
     this.router = injector.get(Router);
     this.route = injector.get(ActivatedRoute);
-    this.errorService = injector.get(HttpErrorService);
+    this.errorService = injector.get(HttpNotificationService);
   }
 
   ngOnDestroy(): void {

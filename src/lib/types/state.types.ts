@@ -10,6 +10,8 @@ export type RequestState = {
   failed: boolean;
 };
 
+export type ResponseMeta = { pagination: Object } & { [key: string]: any };
+
 export type BaseState<T> = T & LoaderState;
 
 export type Entity<E> = {
