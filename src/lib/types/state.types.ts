@@ -32,7 +32,7 @@ export type EntityListState<E> = BaseState<EntityList<E>>;
 
 export interface EntityStateExtended<T> extends NgRxEntityState<T> {
   meta: ResponseMeta | null;
-  request: RequestState | undefined;  // General Request
+  request: RequestState | undefined; // General Request
   creation: RequestState | undefined; // Create Request
   updation: RequestState | undefined; // Update Request
 }
@@ -54,6 +54,7 @@ export const updateMetaState = (meta: ResponseMeta, action: string): ResponseMet
       return { ...meta, pagination: { ...meta.pagination, total: meta.pagination.total - 1, count: meta.pagination.count - 1 } };
   }
 };
+
 export const requestDefault: RequestState = { started: false, compeleted: false, failed: false };
 export const requestStarted: RequestState = { started: true, compeleted: false, failed: false };
 export const requestCompleted: RequestState = { started: false, compeleted: true, failed: false };
