@@ -1,26 +1,38 @@
-import { Directive, EventEmitter, Injector, Input, Output } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Injector, Input, Output } from '@angular/core';
+import { ElementRef, ViewChild } from '@angular/core';
+import { Subject } from 'rxjs';
 import { RequestCriteria } from '@cartesianui/core';
 import { BaseComponent } from './base.component';
+import { ChildComponent } from './base.types';
 import { IPaginationModel } from '../models';
-import {ElementRef, ViewChild} from "@node_modules/@angular/core";
 
-@Directive()
-export abstract class ListingControlsComponent<TDataModel, TSearchFormModel> extends BaseComponent {
-
+@Component({
+  template: ''
+})
+export abstract class ListingControlsComponent<TDataModel, TSearchFormModel, TChildComponent extends ChildComponent = {}> extends BaseComponent<TChildComponent> implements AfterViewInit {
   @ViewChild('dtContainer') dtContainer: ElementRef;
 
   // use if data is passed from parent
   @Input()
   rows: Array<TDataModel>;
 
+  @Input()
+  selected: Array<TDataModel> = [];
+
+  // cbClick & selectedChange both save, selected added laterly to use selected & selectedChange conventiobn
+  // cbClick not removed to retain backwork compability
+  @Output()
+  selectedChange: EventEmitter<Array<TDataModel>> = new EventEmitter<Array<TDataModel>>();
+
   @Output()
   cbClick: EventEmitter<Array<TDataModel>> = new EventEmitter<Array<TDataModel>>();
 
-  data: Array<TDataModel>; // use to populate data directly in child
-
-  selected: Array<TDataModel> = [];
+  // Use to populate data directly (in add subscription)
+  data: Array<TDataModel>;
 
   criteria: RequestCriteria<TSearchFormModel>;
+
+  criteria$: Subject<RequestCriteria<TSearchFormModel>>;
 
   pagination: IPaginationModel;
 
@@ -36,11 +48,9 @@ export abstract class ListingControlsComponent<TDataModel, TSearchFormModel> ext
     };
   }
 
-  protected abstract list(): void;
-
-  protected abstract delete(): void;
-
-  protected abstract addSubscriptions(): void;
+  ngAfterViewInit(): void {
+    this.list();
+  }
 
   initCriteria(searchForm: { new (): TSearchFormModel }): RequestCriteria<TSearchFormModel> {
     return (this.criteria = new RequestCriteria<TSearchFormModel>(new searchForm()));
@@ -48,17 +58,18 @@ export abstract class ListingControlsComponent<TDataModel, TSearchFormModel> ext
 
   setPage(event): void {
     this.criteria.page(this.covertOffsetToPageNumber(event.offset));
-    this.reload();
+    this.list();
   }
 
   setSorting(event): void {
     this.criteria.orderBy(event.column.name, event.newValue);
-    this.reload();
+    this.list();
   }
 
   onSelect(event): void {
     this.selected = [...event.selected];
-    this.cbClick.emit(event);
+    this.cbClick.emit(this.selected);
+    this.selectedChange.emit(this.selected);
   }
 
   startLoading(): void {
@@ -87,7 +98,17 @@ export abstract class ListingControlsComponent<TDataModel, TSearchFormModel> ext
     return offset + 1;
   }
 
-  reload(): void {
-    this.list();
+  hydrateSearchCriteria(): void {
+    this.subscriptions.push(
+      this.route.queryParams.subscribe((params) => {
+        if (params['search']) this.criteria.urlParamsToSearchCriteria(params['search'] ?? '');
+      })
+    );
   }
+
+  appendSearchCriteriaToUrl() {
+    this._location.replaceState(`${this.router.url.split('?')[0]}${this.criteria.searchCriteriaToUrlParams()}`);
+  }
+
+  protected abstract list(): void;
 }

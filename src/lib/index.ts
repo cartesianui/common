@@ -11,3 +11,4 @@ export * from './models';
 export * from './pipes';
 export * from './services';
 export * from './widgets';
+export * from './types';
