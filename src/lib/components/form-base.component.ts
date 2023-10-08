@@ -7,15 +7,13 @@ import { ChildComponent } from './base.types';
   template: ''
 })
 export abstract class FormBaseComponent<TDataModel, TChildComponent extends ChildComponent = {}> extends BaseComponent<TChildComponent> {
+  @Output() created: EventEmitter<TDataModel | boolean> = new EventEmitter();
 
-  @Output() created: EventEmitter<TDataModel> = new EventEmitter();
-
-  @Output() updated: EventEmitter<TDataModel> = new EventEmitter();
+  @Output() updated: EventEmitter<TDataModel | boolean> = new EventEmitter();
 
   formGroup: FormGroup;
 
   constructor(injector: Injector) {
     super(injector);
   }
-
 }
