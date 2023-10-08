@@ -1,5 +1,6 @@
-import { Injector, ElementRef, OnDestroy, Directive, Component } from '@angular/core';
-import { Router, ActivatedRoute, NavigationEnd, Event } from '@angular/router';
+import { Injector, ElementRef, OnDestroy, Component } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
 import { Title } from '@angular/platform-browser';
 import { Subscription } from 'rxjs';
 import {
@@ -40,6 +41,7 @@ export abstract class BaseComponent<TChildComponent extends ChildComponent = {}>
   titleService: Title;
   router: Router;
   route: ActivatedRoute;
+  _location: Location; // underscrore to get rid if some conflict from some other model/class wth same name
   errorService: HttpNotificationService;
 
   childComponents: TChildComponent;
@@ -61,6 +63,7 @@ export abstract class BaseComponent<TChildComponent extends ChildComponent = {}>
     this.titleService = injector.get(Title);
     this.router = injector.get(Router);
     this.route = injector.get(ActivatedRoute);
+    this._location = injector.get(Location);
     this.errorService = injector.get(HttpNotificationService);
   }
 

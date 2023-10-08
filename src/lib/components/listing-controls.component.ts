@@ -1,10 +1,10 @@
 import { AfterViewInit, Component, EventEmitter, Injector, Input, Output } from '@angular/core';
+import { ElementRef, ViewChild } from '@angular/core';
+import { Subject } from 'rxjs';
 import { RequestCriteria } from '@cartesianui/core';
 import { BaseComponent } from './base.component';
-import { ChildComponent} from './base.types';
+import { ChildComponent } from './base.types';
 import { IPaginationModel } from '../models';
-import { ElementRef, ViewChild } from '@angular/core';
-
 
 @Component({
   template: ''
@@ -32,6 +32,8 @@ export abstract class ListingControlsComponent<TDataModel, TSearchFormModel, TCh
 
   criteria: RequestCriteria<TSearchFormModel>;
 
+  criteria$: Subject<RequestCriteria<TSearchFormModel>>;
+
   pagination: IPaginationModel;
 
   searchText = '';
@@ -47,14 +49,8 @@ export abstract class ListingControlsComponent<TDataModel, TSearchFormModel, TCh
   }
 
   ngAfterViewInit(): void {
-    this.reload();
+    this.list();
   }
-  
-  protected abstract list(): void;
-
-  // protected abstract onDelete(): void;
-
-  // protected abstract addSubscriptions(): void;
 
   initCriteria(searchForm: { new (): TSearchFormModel }): RequestCriteria<TSearchFormModel> {
     return (this.criteria = new RequestCriteria<TSearchFormModel>(new searchForm()));
@@ -62,18 +58,18 @@ export abstract class ListingControlsComponent<TDataModel, TSearchFormModel, TCh
 
   setPage(event): void {
     this.criteria.page(this.covertOffsetToPageNumber(event.offset));
-    this.reload();
+    this.list();
   }
 
   setSorting(event): void {
     this.criteria.orderBy(event.column.name, event.newValue);
-    this.reload();
+    this.list();
   }
 
   onSelect(event): void {
     this.selected = [...event.selected];
-    this.cbClick.emit(event);
-    this.selectedChange.emit(event);
+    this.cbClick.emit(this.selected);
+    this.selectedChange.emit(this.selected);
   }
 
   startLoading(): void {
@@ -102,7 +98,17 @@ export abstract class ListingControlsComponent<TDataModel, TSearchFormModel, TCh
     return offset + 1;
   }
 
-  reload(): void {
-    this.list();
+  hydrateSearchCriteria(): void {
+    this.subscriptions.push(
+      this.route.queryParams.subscribe((params) => {
+        if (params['search']) this.criteria.urlParamsToSearchCriteria(params['search'] ?? '');
+      })
+    );
   }
+
+  appendSearchCriteriaToUrl() {
+    this._location.replaceState(`${this.router.url.split('?')[0]}${this.criteria.searchCriteriaToUrlParams()}`);
+  }
+
+  protected abstract list(): void;
 }
