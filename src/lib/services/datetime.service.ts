@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DateTime } from 'luxon';
 
-type allowedDateFormat = 'YYYY-MM-DD' | 'YYYY-MM-DD' | 'YYYY-MM-DD H:i:s';
+type allowedDateFormat = 'YYYY-MM-DD' | 'YYYY-MM-DD' | 'y-m-d H:i:s';
 
 @Injectable({
   providedIn: 'root'
@@ -9,22 +9,38 @@ type allowedDateFormat = 'YYYY-MM-DD' | 'YYYY-MM-DD' | 'YYYY-MM-DD H:i:s';
 export class DatetimeService {
   static shortFormat: allowedDateFormat = 'YYYY-MM-DD';
   static longFormat: allowedDateFormat = 'YYYY-MM-DD';
-  static dbFormat: allowedDateFormat = 'YYYY-MM-DD H:i:s';
+  static dbFormat: allowedDateFormat = 'y-m-d H:i:s';
 
-  static sql(date, format?: allowedDateFormat): DateTime | any {
+  static fromSql(date, format?: allowedDateFormat): DateTime | any {
     return format ? DateTime.fromSQL(date).toFormat(format) : DateTime.fromSQL(date);
   }
 
-  static iso(date, format?: allowedDateFormat): DateTime | any {
+  static fromISO(date, format?: allowedDateFormat): DateTime | any {
     return format ? DateTime.fromISO(date).toFormat(format) : DateTime.fromISO(date);
   }
 
-  static millis(date, format?: allowedDateFormat): DateTime | any {
+  static fromMillis(date, format?: allowedDateFormat): DateTime | any {
     return format ? DateTime.fromMillis(date).toFormat(format) : DateTime.fromMillis(date);
+  }
+
+  static fromJSDate(date: Date) {
+    return DateTime.fromJSDate(date);
   }
 
   static now(format?): DateTime | any {
     return format ? DateTime.now().toFormat(format) : DateTime.now();
+  }
+
+  static toISO(date: string) {
+    return DatetimeService.fromISO(date).toISO();
+  }
+
+  static toJSDate(date: string) {
+    return DatetimeService.fromISO(date).toJSDate();
+  }
+
+  static toLocal(date: string) {
+    return DatetimeService.fromISO(date).toLocaleString();
   }
 
   static timeSince(start: string, precision: 'years' | 'months' | 'days' = 'years'): string {
@@ -65,5 +81,21 @@ export class DatetimeService {
     }
 
     return html;
+  }
+
+  static valid(date: string): boolean {
+    return DatetimeService.fromISO(date).isValid;
+  }
+
+  static isGreater(date: string, minDate: string, boundry: boolean = false): boolean {
+    return boundry ? DatetimeService.fromISO(date) > DatetimeService.fromISO(minDate) : DatetimeService.fromISO(date) >= DatetimeService.fromISO(minDate);
+  }
+
+  static isLess(date: string, maxDate: string, boundry: boolean = false): boolean {
+    return boundry ? DatetimeService.fromISO(date) < DatetimeService.fromISO(maxDate) : DatetimeService.fromISO(date) <= DatetimeService.fromISO(maxDate);
+  }
+
+  static inDateRange(date: string, minDate: string, maxDate: string, boundry: boolean = false): boolean {
+    return DatetimeService.isGreater(date, minDate, boundry) && DatetimeService.isLess(date, maxDate, boundry);
   }
 }
