@@ -71,21 +71,6 @@ export abstract class BaseComponent<TChildComponent extends ChildComponent = {}>
     this.removeSubscriptions();
   }
 
-  l(key: string, ...args: any[]): string {
-    let localizedText = this.localization.localize(key, this.localizationSourceName);
-
-    if (!localizedText) {
-      localizedText = key;
-    }
-
-    if (!args || !args.length) {
-      return localizedText;
-    }
-
-    args.unshift(localizedText);
-    return axis.utils.formatString.apply(this, args);
-  }
-
   isGranted(permissionName: string): boolean {
     return this.permissionCheckerService.isGranted(permissionName);
   }
