@@ -16,6 +16,7 @@ import {
   SessionService,
   HttpNotificationService
 } from '@cartesianui/core';
+import { ValidationService } from '@cartesianui/forms';
 import { ChildComponent, ChildComponentSelected } from './base.types';
 import { isEqual } from 'lodash';
 
@@ -36,6 +37,7 @@ export abstract class BaseComponent<TChildComponent extends ChildComponent = {}>
   appSession: SessionService;
   elementRef: ElementRef;
   subscriptions: Array<Subscription> = [];
+  formValidator: ValidationService;
   titleService: Title;
   router: Router;
   route: ActivatedRoute;
@@ -56,6 +58,7 @@ export abstract class BaseComponent<TChildComponent extends ChildComponent = {}>
     this.message = injector.get(MessageService);
     this.tenancy = injector.get(TenancyService);
     this.appSession = injector.get(SessionService);
+    this.formValidator = injector.get(ValidationService);
     this.elementRef = injector.get(ElementRef);
     this.titleService = injector.get(Title);
     this.router = injector.get(Router);
