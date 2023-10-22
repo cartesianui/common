@@ -10,9 +10,49 @@ import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { DatetimeService } from './services';
 import { LookupWidgetComponent } from './widgets';
 import { BaseComponent } from './components';
+import { ConfigurableFormComponent } from './form/configurable/configurable-form.component';
+import { ButtonComponent } from './form/configurable/elements/button/button.component';
+import { InputComponent } from './form/configurable/elements/input/input.component';
+import { SelectComponent } from './form/configurable/elements/select/select.component';
+import { ConfigurableFieldDirective } from './form/configurable/directives/configurable-field.directive';
+import {
+  NoWhiteSpaceValidator,
+  EqualValidator,
+  EmailValidator,
+  DomainValidator,
+  DateValidator,
+  AgeValidator,
+  InCollectionValidator,
+  NotInCollectionValidator,
+  FloatValidator,
+  UnicodeValidator,
+  NumericValidator,
+  ValidateDirective,
+  WithValidationComponent,
+  ValidationService,
+  RequireRelativeValidator
+} from './form/validation';
 
+const VALIDATION_DIRECTIVES = [
+  NoWhiteSpaceValidator,
+  EqualValidator,
+  EmailValidator,
+  DomainValidator,
+  DateValidator,
+  AgeValidator,
+  InCollectionValidator,
+  NotInCollectionValidator,
+  FloatValidator,
+  UnicodeValidator,
+  NumericValidator,
+  ValidateDirective,
+  WithValidationComponent,
+  ValidationService,
+  RequireRelativeValidator
+];
+const FORM_COMPONENTS = [ConfigurableFormComponent, ButtonComponent, InputComponent, SelectComponent, ConfigurableFieldDirective];
 const WIDGET_COMPONENTS = [LookupWidgetComponent];
-const COMMON_COMPONENTS = [BaseComponent, ...WIDGET_COMPONENTS] as any;
+const COMMON_COMPONENTS = [BaseComponent, ...FORM_COMPONENTS, ...WIDGET_COMPONENTS, ...VALIDATION_DIRECTIVES] as any;
 
 @NgModule({
   imports: [AngularCommonModule, RouterModule, FormsModule, ReactiveFormsModule, TypeaheadModule, NgxDatatableModule],

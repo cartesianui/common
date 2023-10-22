@@ -16,7 +16,7 @@ import {
   SessionService,
   HttpNotificationService
 } from '@cartesianui/core';
-import { ValidationService } from '@cartesianui/forms';
+import { ValidationService } from '../form/validation';
 import { ChildComponent, ChildComponentSelected } from './base.types';
 import { isEqual } from 'lodash';
 
