@@ -8,7 +8,7 @@ import { BusyDirective, AccessibleDirective } from './directive';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { DatetimeService } from './services';
-import { LookupWidgetComponent } from './widgets';
+import { LookupWidgetComponent, DefaultActionsComponent } from './widgets';
 import { BaseComponent } from './components';
 import { ConfigurableFormComponent } from './form/configurable/configurable-form.component';
 import { ButtonComponent } from './form/configurable/elements/button/button.component';
@@ -50,7 +50,7 @@ const VALIDATION_DIRECTIVES = [
   RequireRelativeValidator
 ];
 const FORM_COMPONENTS = [ConfigurableFormComponent, ButtonComponent, InputComponent, SelectComponent, ConfigurableFieldDirective];
-const WIDGET_COMPONENTS = [LookupWidgetComponent];
+const WIDGET_COMPONENTS = [LookupWidgetComponent, DefaultActionsComponent];
 const COMMON_COMPONENTS = [BaseComponent, ...FORM_COMPONENTS, ...WIDGET_COMPONENTS, ...VALIDATION_DIRECTIVES] as any;
 
 @NgModule({
