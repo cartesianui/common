@@ -20,3 +20,5 @@ export * from './form/configurable/models/form-section.model';
 export * from './form/configurable/models/configurable-field.model';
 export * from './form/configurable/models/form-field-select.model';
 export * from './form/configurable/models/form-field.model';
+export * from './form/configurable/directives/configurable-field.directive';
+export * from './form/configurable/elements'

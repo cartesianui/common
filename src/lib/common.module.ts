@@ -47,7 +47,6 @@ const VALIDATION_DIRECTIVES = [
   NumericValidator,
   ValidateDirective,
   WithValidationComponent,
-  ValidationService,
   RequireRelativeValidator
 ];
 const FORM_COMPONENTS = [ConfigurableFormComponent, ButtonComponent, InputComponent, SelectComponent, ConfigurableFieldDirective];
@@ -63,13 +62,13 @@ export class CommonModule {
   static forRoot(): ModuleWithProviders<CommonModule> {
     return {
       ngModule: CommonModule,
-      providers: [DatetimeService]
+      providers: [DatetimeService, ValidationService]
     };
   }
   static forFeature(): ModuleWithProviders<CommonModule> {
     return {
       ngModule: CommonModule,
-      providers: [DatetimeService]
+      providers: [DatetimeService, ValidationService]
     };
   }
 }
