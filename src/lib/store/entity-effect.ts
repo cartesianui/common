@@ -192,7 +192,7 @@ export abstract class EntityEffect<TModel, THttpServiceExtension extends IHttpSe
           catchError((error) => {
             this.logError('delete', { id }, error);
             return of(this.actions.deleteFailure({
-              message: error?.error?.message || 'Delete failed',
+              message: (error?.message ?? error?.error?.message) || 'Delete failed',
               errors: error?.error?.errors || null
             }));
           })
