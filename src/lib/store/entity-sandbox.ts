@@ -45,6 +45,34 @@ export class EntitySandbox<T> extends Sandbox {
 
   readonly requestFailed: Signal<boolean>;
   readonly createFailed: Signal<boolean>;
+  /**
+   * The server's response body from the last FAILED create, or null (`F61`).
+   *
+   * For a refusal the operator can answer — read a key off this rather than matching the message
+   * text, which is a sentence product people rewrite. See `RequestState.body`.
+   */
+  readonly createErrorBody: Signal<unknown>;
+  /**
+   * The field name a refused create says will get it through, or null (`F61`).
+   *
+   * Lives here rather than in each screen so the rule — *a refusal that names a field can be
+   * answered by resending with that field true* — exists ONCE. Five payment create screens read
+   * this; copying the `?.confirm` read into each of them is how `F46` happened.
+   *
+   * Generic on purpose. `confirm` is a property of the RESPONSE, not of payments: any exception
+   * that renders the key gets the affordance for free, which is the shape
+   * `DuplicatePaymentSuspected` argues for in its own docblock.
+   */
+  readonly createConfirmField: Signal<string | null>;
+  /**
+   * The server's message from the last failed create, narrowed to a string, or null (`F61`).
+   *
+   * Beside `createConfirmField` and for the same reason: `body` is `unknown`, so SOMETHING has to
+   * say what it expects of it, and doing that once here beats five components each narrowing the
+   * same two keys. `message` is not domain knowledge — it is already a field of the cartesian error
+   * shape `extractErrorInfo()` reads and of the `createFailure` payload itself.
+   */
+  readonly createErrorMessage: Signal<string | null>;
   readonly updateFailed: Signal<boolean>;
   readonly deleteFailed: Signal<boolean>;
   readonly getFailed: Signal<boolean>;
@@ -96,6 +124,29 @@ export class EntitySandbox<T> extends Sandbox {
 
     this.requestFailed = computed(() => this.requestState()?.failed ?? false);
     this.createFailed = computed(() => this.createState()?.failed ?? false);
+    // Gated on `failed` so a stale body cannot outlive the failure it came from — the slot is
+    // replaced on the next `create`, but a component reading between a retry's start and its
+    // result would otherwise still see the old refusal.
+    this.createErrorBody = computed(() => (this.createState()?.failed ? this.createState()?.body ?? null : null));
+    this.createConfirmField = computed(() => {
+      // Narrowed rather than cast. `body` is `unknown`, so this is the one place that says what it
+      // expects of it — a `confirm` key holding a non-empty string — and every consumer downstream
+      // gets a plain `string | null` instead of having to trust a shape.
+      const body = this.createErrorBody();
+      if (typeof body !== 'object' || body === null || !('confirm' in body)) {
+        return null;
+      }
+      const field = (body as { confirm?: unknown }).confirm;
+      return typeof field === 'string' && field !== '' ? field : null;
+    });
+    this.createErrorMessage = computed(() => {
+      const body = this.createErrorBody();
+      if (typeof body !== 'object' || body === null || !('message' in body)) {
+        return null;
+      }
+      const message = (body as { message?: unknown }).message;
+      return typeof message === 'string' && message !== '' ? message : null;
+    });
     this.updateFailed = computed(() => this.updateState()?.failed ?? false);
     this.deleteFailed = computed(() => this.deleteState()?.failed ?? false);
     this.getFailed = computed(() => this.getState()?.failed ?? false);

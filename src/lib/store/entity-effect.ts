@@ -9,18 +9,31 @@ import { entityActions } from './entity-actions.util';
 /**
  * Helper function to extract error information from various error formats
  */
-function extractErrorInfo(error: any): { message: string; errors: any } {
+function extractErrorInfo(error: any): { message: string; errors: any; body?: unknown } {
+  // Handle HTTP error response — UNWRAP FIRST, and the order is the whole point.
+  // The interceptor throws a real `HttpErrorResponse` (UF-D33 option A) carrying the
+  // server body in `.error`, and `HttpErrorResponse` has a `.message` of its own:
+  // Angular's generic "Http failure response for /v1/…: 422 Unprocessable Entity".
+  // Check the cartesian shape first and that generic sentence wins every time.
+  if (error?.error !== null && error?.error !== undefined) {
+    return extractErrorInfo(error.error);
+  }
+
   // Handle Cartesian API response format
   if (error?.errors || error?.message) {
     return {
       message: error.message || 'An error occurred',
-      errors: error.errors || error
+      errors: error.errors || error,
+      // THE UNWRAPPED BODY, kept whole (`F61`). `message` and `errors` are the two fields this
+      // helper has always named, and a refusal the caller can ANSWER carries a third that is
+      // specific to it — `confirm` on `DuplicatePaymentSuspected`. Naming each such field here
+      // would put every exception's vocabulary in a shared helper; handing the body through lets
+      // the one screen that understands a given refusal read its own key.
+      //
+      // This is the branch that matters: the interceptor throws an `HttpErrorResponse` whose
+      // `.error` is the server payload, and the recursion above unwraps to exactly here.
+      body: error
     };
-  }
-
-  // Handle HTTP error response
-  if (error?.error) {
-    return extractErrorInfo(error.error);
   }
 
   // Handle Error objects
@@ -144,9 +157,9 @@ export abstract class EntityEffect<TModel, THttpServiceExtension extends IHttpSe
             return this.actions.createSuccess({ entity: data });
           }),
           catchError((error) => {
-            const { message, errors } = extractErrorInfo(error);
+            const { message, errors, body } = extractErrorInfo(error);
             this.logError('create', { entity }, error);
-            return of(this.actions.createFailure({ errors, message }));
+            return of(this.actions.createFailure({ errors, message, body }));
           })
         )
       ),
@@ -192,7 +205,7 @@ export abstract class EntityEffect<TModel, THttpServiceExtension extends IHttpSe
           catchError((error) => {
             this.logError('delete', { id }, error);
             return of(this.actions.deleteFailure({
-              message: error?.error?.message || 'Delete failed',
+              message: (error?.error?.message ?? error?.message) || 'Delete failed',
               errors: error?.error?.errors || null
             }));
           })

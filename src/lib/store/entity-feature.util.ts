@@ -44,9 +44,12 @@ export function entityFeature<T, TStateExtension extends Record<string, any> = {
       selected: entity,
       create: { ...requestCompleted }
     })),
-    on(actions.createFailure, (state) => ({
+    // `F61` — the body is KEPT rather than discarded. It was always dispatched and always dropped
+    // here, which is why a component could learn that a create failed and never why. See
+    // `RequestState.body`. The other three failure reducers are unchanged on purpose.
+    on(actions.createFailure, (state, { body }) => ({
       ...state,
-      create: { ...requestFailed }
+      create: { ...requestFailed, body }
     })),
 
     // -- update

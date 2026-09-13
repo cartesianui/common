@@ -28,7 +28,8 @@ export function entityActions<TModel, TName extends string>(entityName: TName) {
       // CRUD success/failure actions
       'Load Success': props<{ entities: TModel[]; meta: ResponseMeta }>(),
       'Create Success': props<{ entity: TModel }>(),
-      'Create Failure': props<{ errors: IError; message: string }>(),
+      // `body` is the server's response, for a refusal the caller can answer — see `RequestState.body` (`F61`).
+      'Create Failure': props<{ errors: IError; message: string; body?: unknown }>(),
       'Update Success': props<{ entity: TModel }>(),
       'Update Failure': props<{ errors: IError; message: string }>(),
       'Delete Success': props<{ id: string }>(),
