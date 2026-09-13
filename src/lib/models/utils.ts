@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import { WhereItem, SearchForm } from '@cartesianui/core';
-import { FieldDescriptor, SearchFieldDescriptor, SearchMetaInput } from './types';
+import { FieldDescriptor, SearchFieldDescriptor, SearchFieldType, SearchMetaInput } from './types';
 
 const LIST_KEY   = Symbol('list-meta');
 const FORM_KEY   = Symbol('form-meta');
@@ -110,6 +110,42 @@ export function EntityMeta(config: {
       }
     }
   };
+}
+
+/**
+ * Replace one search descriptor with an ENTITY PICKER pointing at `url`.
+ *
+ * MECHANISM ONLY — this library knows nothing about parties, vendors or customers, and must not.
+ * It was briefly written here as `narrowPartyFilter(fields, 'vendor' | 'customer')` with `/vendors`
+ * and `/customers` hard-coded, and the user rejected that placement: *"@cartesianui/common don't
+ * know about lower level things"*. They were right, and it was inconsistent with the very precedent
+ * cited for it — the sibling `narrowSourceTypeFilter()` lives in the billing library that owns the
+ * concept. The domain half now sits beside it; only the mechanism is here.
+ *
+ * WHY IT EXISTS AT ALL. One `@EntityMeta` block serves screens that are not the same. `Invoice` and
+ * `Payment` each declare their party filter once, and each is rendered by per-kind listings where
+ * the party is a customer on one side and a vendor on the other. A single descriptor cannot be right
+ * for both, so the listing narrows the shared list at `ngOnInit`.
+ *
+ * Pure and non-mutating. No-ops when the model declares no such field, so a listing cannot grow a
+ * filter it never had by calling this.
+ */
+export function narrowEntityFilter(
+  fields: SearchFieldDescriptor[],
+  key: string,
+  url: string,
+  label?: string
+): SearchFieldDescriptor[] {
+  return (fields ?? []).map((f) =>
+    f?.key === key
+      ? {
+          ...f,
+          label: f.label ?? label,
+          type: 'entity' as SearchFieldType,
+          url,
+        }
+      : f
+  );
 }
 
 export class FieldMetaBuilder {
